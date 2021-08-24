@@ -1,11 +1,11 @@
 apiVersion: 1.0.0
 metadata:
-  name: quarkus-3vr5n
+  name: user1-quarkus
 projects:
-  - name: quarkus-quickstarts
+  - name: user1-quarkus
     source:
-      location: 'https://devfile-registry-openshift-workspaces.apps.cluster-5119.5119.sandbox1387.opentlc.com/resources/quarkus-quarkus-quickstarts-main.zip'
-      type: zip
+      location: 'https://github.com/jlmayorga/crw-workshop-quarkus.git'
+      type: git
 components:
   - id: redhat/quarkus-java11/latest
     type: chePlugin
@@ -14,7 +14,7 @@ components:
       - name: quarkus-development-server
         port: 8080
       - attributes:
-          path: /hello/greeting/che-user
+          path: /hello
         name: hello-greeting-endpoint
         port: 8080
       - attributes:
@@ -44,13 +44,13 @@ components:
 commands:
   - name: 1. Package the application
     actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/quarkus-quickstarts/getting-started'
+      - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
         command: mvn package
         component: maven
   - name: 2. Start Quarkus in devmode (hot deploy + debug)
     actions:
-      - workdir: '${CHE_PROJECTS_ROOT}/quarkus-quickstarts/getting-started'
+      - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
         command: 'mvn compile quarkus:dev -Dquarkus.http.host=0.0.0.0 -Dquarkus.live-reload.instrumentation=false'
         component: maven
