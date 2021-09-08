@@ -25,7 +25,7 @@ components:
           public: 'false'
         name: tests
         port: 8081
-    memoryLimit: 512Mi
+    memoryLimit: 1Gi
     type: dockerimage
     volumes:
       - name: m2
@@ -40,6 +40,8 @@ components:
   - id: redhat/vscode-xml/latest
     type: chePlugin
   - id: redhat/java/latest
+    type: chePlugin
+  - id: redhat/vscode-openshift-connector/latest
     type: chePlugin
 commands:
   - name: 1. Package the application
