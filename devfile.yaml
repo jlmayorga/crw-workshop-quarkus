@@ -1,8 +1,8 @@
 apiVersion: 1.0.0
 metadata:
-  name: user1-quarkus
+  generateName: crw-workshop-quarkus-
 projects:
-  - name: user1-quarkus
+  - name: code-with-quarkus
     source:
       location: 'https://github.com/jlmayorga/crw-workshop-quarkus.git'
       type: git
@@ -48,25 +48,40 @@ commands:
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
-        command: 'mvn package -f ${CHE_PROJECTS_ROOT}/user1-quarkus'
+        command: 'mvn package -DskipTests -f ${CHE_PROJECTS_ROOT}/code-with-quarkus'
         component: maven
   - name: 2. Start Quarkus in devmode (hot deploy + debug)
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
-        command: 'mvn compile quarkus:dev -Dquarkus.http.host=0.0.0.0 -Dquarkus.live-reload.instrumentation=false -f ${CHE_PROJECTS_ROOT}/user1-quarkus'
+        command: 'mvn compile quarkus:dev -Dquarkus.http.host=0.0.0.0 -Dquarkus.live-reload.instrumentation=false -f ${CHE_PROJECTS_ROOT}/code-with-quarkus'
+        component: maven
+  - name: 3. Build Native App
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}'
+        type: exec
+        command: 'mvn package -Pnative -DskipTests -f ${CHE_PROJECTS_ROOT}/code-with-quarkus'
         component: maven
   - name: 3. Login to OpenShift
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
-        command: 'oc login ${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT} --username ${CHE_WORKSPACE_NAMESPACE} --password openshift --insecure-skip-tls-verify=true'
+        command: 'oc login https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT} --username ${CHE_WORKSPACE_NAMESPACE} --password openshift --insecure-skip-tls-verify=true'
         component: maven
   - name: 4. Build Container Image
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
         command: 'mvn clean package -Dquarkus.container-image.build=true -Dquarkus.kubernetes-client.trust-certs=true'
+        component: maven
+  - name: 4. Create Project and Deploy
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}'
+        type: exec
+        command: |
+          oc new-project ${CHE_WORKSPACE_NAMESPACE}-test
+          oc new-app --namespace ${CHE_WORKSPACE_NAMESPACE}-test --name code-with-quarkus
+
         component: maven
   - name: Attach remote debugger
     actions:
