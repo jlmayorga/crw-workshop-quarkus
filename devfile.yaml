@@ -56,6 +56,18 @@ commands:
         type: exec
         command: 'mvn compile quarkus:dev -Dquarkus.http.host=0.0.0.0 -Dquarkus.live-reload.instrumentation=false -f ${CHE_PROJECTS_ROOT}/user1-quarkus'
         component: maven
+  - name: 3. Login to OpenShift
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}'
+        type: exec
+        command: 'oc login ${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT} --username ${CHE_WORKSPACE_NAMESPACE} --password openshift --insecure-skip-tls-verify=true'
+        component: maven
+  - name: 4. Build Container Image
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}'
+        type: exec
+        command: 'mvn clean package -Dquarkus.container-image.build=true -Dquarkus.kubernetes-client.trust-certs=true'
+        component: maven
   - name: Attach remote debugger
     actions:
       - referenceContent: |
