@@ -26,6 +26,7 @@ components:
         name: tests
         port: 8081
     memoryLimit: 4Gi
+    cpuLimit: 1500m
     type: dockerimage
     alias: maven
     image: 'quay.io/openshiftlabs/quarkus-workshop-stack:2.7'
@@ -59,19 +60,19 @@ commands:
         type: exec
         command: 'mvn package -Pnative -DskipTests -f ${CHE_PROJECTS_ROOT}/code-with-quarkus'
         component: maven
-  - name: 3. Login to OpenShift
+  - name: 4. Login to OpenShift
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
         command: 'oc login https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT} --username ${CHE_WORKSPACE_NAMESPACE} --password openshift --insecure-skip-tls-verify=true'
         component: maven
-  - name: 4. Build Container Image
+  - name: 5. Build Container Image
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
-        command: 'mvn clean package -Dquarkus.container-image.build=true -Dquarkus.kubernetes-client.trust-certs=true'
+        command: 'mvn clean package -Dquarkus.container-image.build=true -Dquarkus.kubernetes-client.trust-certs=true -f ${CHE_PROJECTS_ROOT}/code-with-quarkus'
         component: maven
-  - name: 4. Create Project and Deploy
+  - name: 6. Create Project and Deploy
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
