@@ -25,17 +25,14 @@ components:
           public: 'false'
         name: tests
         port: 8081
-    memoryLimit: 1Gi
+    memoryLimit: 4Gi
     type: dockerimage
-    volumes:
-      - name: m2
-        containerPath: /home/jboss/.m2
     alias: maven
-    image: 'registry.redhat.io/codeready-workspaces/plugin-java11-rhel8@sha256:f90e09397caa4dd5cd3476e495adfc0096272c0ba746a6e32215175c541ae058'
+    image: 'quay.io/openshiftlabs/quarkus-workshop-stack:2.7'
     env:
-      - value: '-XX:MaxRAMPercentage=50.0 -XX:+UseParallelGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xms20m -Djava.security.egd=file:/dev/./urandom -Duser.home=/home/jboss'
-        name: JAVA_OPTS
-      - value: $(JAVA_OPTS)
+      - value: /home/jboss/.m2
+        name: MAVEN_CONFIG
+      - value: '-Xmx4G -Xss128M -XX:MetaspaceSize=1G -XX:MaxMetaspaceSize=2G -XX:+CMSClassUnloadingEnabled'
         name: MAVEN_OPTS
   - id: redhat/vscode-xml/latest
     type: chePlugin
