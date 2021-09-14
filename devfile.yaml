@@ -77,8 +77,10 @@ commands:
       - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
         command: |
+          oc login https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT} --username ${CHE_WORKSPACE_NAMESPACE} --password openshift --insecure-skip-tls-verify=true
           oc new-project ${CHE_WORKSPACE_NAMESPACE}-test
-          oc new-app --namespace ${CHE_WORKSPACE_NAMESPACE}-test --name code-with-quarkus
+          oc new-app --namespace ${CHE_WORKSPACE_NAMESPACE}-test --name=code-with-quarkus ${CHE_WORKSPACE_NAMESPACE}-codeready/code-with-quarkus:1.0.0-SNAPSHOT
+          oc expose svc/code-with-quarkus
 
         component: maven
   - name: Attach remote debugger
