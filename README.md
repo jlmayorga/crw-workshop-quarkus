@@ -1,58 +1,34 @@
-# code-with-quarkus Project
+# Red Hat CodeReady Workspaces Workshop
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+:::warning
+Credentials will be assigned during the workshop
+:::
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+## Environment Access
 
-## Running the application in dev mode
+You will be using [Red Hat CodeReady Workspaces](https://developers.redhat.com/products/codeready-workspaces/overview),
+an online IDE. Changes to files are auto-saved every few seconds,
+so you don't need to explicitly save changes.
 
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
-```
+To get started, access the CodeReady Workspaces Dashboard and
+log in using the username and password you've been assigned.
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+| Name | URL |
+| -------- | -------- |
+| OCP Console | <https://console-openshift-console.apps.cluster-40fb.40fb.sandbox1485.opentlc.com> |
+| CodeReady Workspaces Dashboard | <https://codeready-openshift-workspaces.apps.cluster-40fb.40fb.sandbox1485.opentlc.com/dashboard/#/workspaces> |
 
-## Packaging and running the application
+## Creating a new Workspace
 
-The application can be packaged using:
-```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+Once you log in, you'll be placed on your personal dashboard.
 
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
+![CRW Landing Page](https://i.imgur.com/CUM5oV5.png)
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+You can create a new Workspace in multiple ways
 
-## Creating a native executable
+![Uploading file..._j1gu6gzm4]()
 
-You can create a native executable using: 
-```shell script
-./mvnw package -Pnative
-```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
+### Create new project
 
-You can then execute your native executable with: `./target/code-with-quarkus-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
-
-## Related Guides
-
-- RESTEasy JAX-RS ([guide](https://quarkus.io/guides/rest-json)): REST endpoint framework implementing JAX-RS and more
-
-## Provided Code
-
-### RESTEasy JAX-RS
-
-Easily start your RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+Clone the project <https://github.com/jlmayorga/crw-workshop-quarkus>
