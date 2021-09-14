@@ -22,11 +22,11 @@ log in using the username and password you've been assigned.
 
 Once you log in, you'll be placed on your personal dashboard.
 
-![CRW Landing Page](https://i.imgur.com/CUM5oV5.png)
+![CRW Landing Page](docs/images/crw-01.png)
 
 You can create a new Workspace in multiple ways
 
-![Uploading file..._j1gu6gzm4]()
+![Create new Workspace](docs/images/crw-02.png)
 
 
 ### Create new project
