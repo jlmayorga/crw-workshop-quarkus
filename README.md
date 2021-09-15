@@ -87,10 +87,10 @@ Click on the button labeled `Open in Preview` and the preview panel will be disp
 
 ![Preview Panel](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-09.png)
 
-> :heavy_check_mark:
+> :heavy_check_mark: &nbsp;
 > CodeReady Workspaces does all the heavy lifting for you by creating OpenShift resources for your Workspace elements.
 > 
-> :information_source: If the endpoint defined in the Devfile is configured as public, CodeReady Workspaces will automatically create an [OpenShift Route](https://docs.openshift.com/container-platform/4.8/rest_api/network_apis/route-route-openshift-io-v1.html) and make the service externally available.
+> :information_source: &nbsp; If the endpoint defined in the Devfile is configured as public, CodeReady Workspaces will automatically create an [OpenShift Route](https://docs.openshift.com/container-platform/4.8/rest_api/network_apis/route-route-openshift-io-v1.html) and make the service externally available.
 
 
 ### Modify the application
@@ -125,14 +125,14 @@ Select the option from the `org.jboss.resteasy.annotations` package.
 To verify that this change has been applied, open a new terminal from the Workspace Panel and execute the following command:
 
 ```bash=
-curl http://localhost:8080/hello/greetings/John
+curl http://localhost:8080/hello/greeting/John
 ```
 
 The service should reply with the following text:
 
 > Hello, John
 
-### Attaching a debugger to the application
+## Debugging
 
 The [Devfile](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/devfile.yaml) used to create the Workspace of this workshop has [VS Code launch configuration](https://code.visualstudio.com/docs/editor/debugging) to attach a remote debugger to the application.
 
@@ -165,39 +165,93 @@ Add a breakpoint to the `GreetingResource.java` file by clicking to the left of 
 Open a new terminal from the Workspace Panel and execute the following command:
 
 ```bash=
-curl http://localhost:8080/hello/greetings/John
+curl http://localhost:8080/hello/greeting/John
 ```
 
-The service should reply with the following text:
+CodeReady Workspaces should pause the execution at the breakpoint.
+
+Click on the "Continue" button in the debug view, the application should continue with the execution and return a response.
 
 > Hello, John
 
+![Debug Application](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-13.gif)
+
+## Deploy local changes to an OpenShift project
+
+In this section you will use the [OpenShift CLI (oc)](https://docs.openshift.com/container-platform/4.8/cli_reference/openshift_cli/getting-started-cli.html) that is bundled inside the runtime container of your Workspace to create an additional [OpenShift Project](https://docs.openshift.com/container-platform/4.8/applications/projects/working-with-projects.html) and deploy your application to it.
+
+This proces will be broken down in two parts:
+
+- Create a container image
+- Create an OpenShift project and deploy the application
+
+<br>
+
+> :information_source: &nbsp; The [Devfile](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/devfile.yaml) used to create the Workspace of this workshop has preconfigured commands for this.
+
+### Creating a container image
+
+Since the Workspace project is a [Quarkus](https://quarkus.io/) application, we can take advantage of the [S2I](https://quarkus.io/guides/container-image#s2i) and OpenShift Quarkus extensions to perform a container build inside the OpenShift cluster.
+
+To add the extension to the project, open a terminal window and execute the following command:
+
+```bash
+mvn quarkus:add-extension -Dextensions="openshift"
+```
+
+After a few seconds you should see a *BUILD SUCCESS* message.
+
+Once the extension has been added to the project you can execute the command named `Build Container Image` from the `Workspace Panel`.
+
+![Build Container Image](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-18.png)
 
 
+This commands takes a couple of minutes to finish, meanwhile you can login to the OpenShift Console in a new browser tab, using the same username and password assigned to you and go to the Administrator view.
 
+Once the process of building the container image is completed follow these steps:
 
+- Go to the Administrator view 
+- Select the namespace named `<your user ID>-codeready`
+- Select *Builds* > *BuildConfigs* from the left panel 
+- You should see a new Build Configuration named *code-with-quarkus*
+- Navigate to *Builds* and you should se a new build for the *code-with-quarkus* Build Configuration
+- Navigate to *ImageStreams and you should see a new image stream named *code-with-quarkus*
 
+A new container image with the application code has been pushed to the OpenShift internal container registry.
 
+![Build Configs](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-14.png)
 
+![Builds](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-15.png)
 
+![Image Streams](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-16.png)
 
+### Deploy the application to OpenShift
 
+The process of deploying the application to OpenShift is similar to the previous step, a command has already been configured in the Workspace's Devfile that will take care of this.
 
+To start the deployment of the application to the OpenShift cluster, click on the command named `Create project and Deploy` from the `Workspace Panel`.
 
+![Image Streams](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-19.png)
 
+After a couple of minutes you should see a success message in the terminal where the command was executed. 
 
+This command creates the following OpenShift resources:
 
+- A new Project named `<your user ID>-test`
+- A new Deployment named `code-with-quarkus`
+- A Service named `code-with-quarkus`
+- A Route named `code-with-quarkus`
 
+You can verify that these resources were created by going to the OpenShift console > *<your user ID>-test* Project > Topology
 
+![Image Streams](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-17.png)
 
+---
+# Congratulations!
 
+You have completed the CodeReady Workspaces workshop. If you want to learn more please review the [documentation](https://access.redhat.com/documentation/en-us/red_hat_codeready_workspaces/).
 
-
-
-
-
-
-
+> Try the CodeReady Workspaces in the [Red Hat Sandbox](https://developers.redhat.com/products/codeready-workspaces/overview) without setup or configuration.
 
 
 
