@@ -71,8 +71,8 @@ commands:
       - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
         command: |
-          oc project ${CHE_WORKSPACE_NAMESPACE}-codeready
           oc login https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT} --username ${CHE_WORKSPACE_NAMESPACE} --password openshift --insecure-skip-tls-verify=true
+          oc project ${CHE_WORKSPACE_NAMESPACE}-codeready
           mvn clean package -Dquarkus.container-image.build=true -Dquarkus.kubernetes-client.trust-certs=true -f ${CHE_PROJECTS_ROOT}/code-with-quarkus
 
         component: maven
