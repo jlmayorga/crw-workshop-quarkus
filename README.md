@@ -1,8 +1,6 @@
 # Red Hat CodeReady Workspaces Workshop
 
-:::warning
-Credentials will be assigned during the workshop
-:::
+:warning: Credentials will be assigned during the workshop
 
 ## Environment Access
 
@@ -49,9 +47,11 @@ The [Devfile](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/m
 
 Can you identify them in your Workspace? (*Expand below for answer*)
 
-:::spoiler
-![Workspace Components](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-06.png)
-:::
+<details>
+  <summary>Click to expand!</summary>
+  
+  ![Workspace Components](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-06.png)
+</details>
 
 ## Workspace Commands
 Commands are actions that can be executed in the containers of the Workspace pod.
@@ -87,11 +87,11 @@ Click on the button labeled `Open in Preview` and the preview panel will be disp
 
 ![Preview Panel](https://raw.githubusercontent.com/jlmayorga/crw-workshop-quarkus/main/docs/images/crw-09.png)
 
-:::info
-CodeReady Workspaces does all the heavy lifting for you by creating OpenShift resources for your Workspace elements.
+> :heavy_check_mark:
+> CodeReady Workspaces does all the heavy lifting for you by creating OpenShift resources for your Workspace elements.
+> 
+> :information_source: If the endpoint defined in the Devfile is configured as public, CodeReady Workspaces will automatically create an [OpenShift Route](https://docs.openshift.com/container-platform/4.8/rest_api/network_apis/route-route-openshift-io-v1.html) and make the service externally available.
 
-If the endpoint defined in the Devfile is configured as public, CodeReady Workspaces will automatically create an [OpenShift Route](https://docs.openshift.com/container-platform/4.8/rest_api/network_apis/route-route-openshift-io-v1.html) and make the service externally available.
-:::
 
 ### Modify the application
 
