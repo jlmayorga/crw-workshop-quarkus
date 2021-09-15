@@ -70,7 +70,11 @@ commands:
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}'
         type: exec
-        command: 'mvn clean package -Dquarkus.container-image.build=true -Dquarkus.kubernetes-client.trust-certs=true -f ${CHE_PROJECTS_ROOT}/code-with-quarkus'
+        command: |
+          oc project ${CHE_WORKSPACE_NAMESPACE}-codeready
+          oc login https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT} --username ${CHE_WORKSPACE_NAMESPACE} --password openshift --insecure-skip-tls-verify=true
+          mvn clean package -Dquarkus.container-image.build=true -Dquarkus.kubernetes-client.trust-certs=true -f ${CHE_PROJECTS_ROOT}/code-with-quarkus
+
         component: maven
   - name: 6. Create Project and Deploy
     actions:
@@ -78,7 +82,8 @@ commands:
         type: exec
         command: |
           oc login https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT} --username ${CHE_WORKSPACE_NAMESPACE} --password openshift --insecure-skip-tls-verify=true
-          oc new-project ${CHE_WORKSPACE_NAMESPACE}-test
+          oc project ${CHE_WORKSPACE_NAMESPACE}-test || oc new-project ${CHE_WORKSPACE_NAMESPACE}-test
+          oc policy add-role-to-user system:image-puller system:serviceaccount:${CHE_WORKSPACE_NAMESPACE}-test:default -n ${CHE_WORKSPACE_NAMESPACE}-codeready
           oc new-app --namespace ${CHE_WORKSPACE_NAMESPACE}-test --name=code-with-quarkus ${CHE_WORKSPACE_NAMESPACE}-codeready/code-with-quarkus:1.0.0-SNAPSHOT
           oc expose svc/code-with-quarkus
 
