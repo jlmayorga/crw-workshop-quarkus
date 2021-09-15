@@ -17,8 +17,8 @@ If this is the first time logging in with an account, CodeReady Workspaces will 
 
 | Name | URL |
 | -------- | -------- |
-| OCP Console | <https://console-openshift-console.apps.cluster-40fb.40fb.sandbox1485.opentlc.com> |
-| CodeReady Workspaces Dashboard | <https://codeready-openshift-workspaces.apps.cluster-40fb.40fb.sandbox1485.opentlc.com/dashboard/#/workspaces> |
+| OCP Console |  |
+| CodeReady Workspaces Dashboard |  |
 
 ## Creating a new Workspace
 
